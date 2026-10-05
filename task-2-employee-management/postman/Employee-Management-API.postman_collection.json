@@ -1,0 +1,286 @@
+{
+  "info": {
+    "name": "Employee Management API",
+    "description": "REST API for the Week 2 Task 2 Employee Management System (Flask + MongoDB).\n\nRun the requests in order, or use Run collection. \"Add employee\" saves the new employee's id in the collection variable `employeeId`, which \"Update employee\" and \"Delete employee\" then use.\n\nChange the `baseUrl` collection variable if the API is not running on http://localhost:5000.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "employeeId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Employees (CRUD)",
+      "item": [
+        {
+          "name": "Get all employees",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Response uses the success envelope', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.success).to.be.true;",
+                  "  pm.expect(body.data).to.be.an('array');",
+                  "  pm.expect(body.count).to.eql(body.data.length);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Returns every employee, sorted by name."
+          }
+        },
+        {
+          "name": "Add employee",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201 Created', () => pm.response.to.have.status(201));",
+                  "pm.test('Returns the new employee with an id', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.success).to.be.true;",
+                  "  pm.expect(body.message).to.eql('Employee added successfully.');",
+                  "  pm.expect(body.data.id).to.be.a('string').with.lengthOf(24);",
+                  "  pm.expect(body.data.name).to.eql('Tirth Vaghela');",
+                  "  pm.expect(body.data.salary).to.eql(60000);",
+                  "  pm.collectionVariables.set('employeeId', body.data.id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tirth Vaghela\",\n  \"department\": \"Engineering\",\n  \"role\": \"Software Developer\",\n  \"salary\": 60000,\n  \"joinDate\": \"2026-06-12\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Creates an employee. All five fields are required."
+          }
+        },
+        {
+          "name": "Update employee",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Returns the updated employee', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.success).to.be.true;",
+                  "  pm.expect(body.message).to.eql('Employee updated successfully.');",
+                  "  pm.expect(body.data.id).to.eql(pm.collectionVariables.get('employeeId'));",
+                  "  pm.expect(body.data.role).to.eql('Senior Software Developer');",
+                  "  pm.expect(body.data.salary).to.eql(85000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tirth Vaghela\",\n  \"department\": \"Engineering\",\n  \"role\": \"Senior Software Developer\",\n  \"salary\": 85000,\n  \"joinDate\": \"2026-06-12\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/{{employeeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "{{employeeId}}"]
+            },
+            "description": "Replaces the employee's details. Send all five fields. Run \"Add employee\" first so `employeeId` is set."
+          }
+        },
+        {
+          "name": "Get employees after update (search)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Search finds the updated employee', () => {",
+                  "  const match = pm.response.json().data.find((e) => e.id === pm.collectionVariables.get('employeeId'));",
+                  "  pm.expect(match, 'employee in results').to.be.an('object');",
+                  "  pm.expect(match.role).to.eql('Senior Software Developer');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees?search=tirth&sort=salary&order=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"],
+              "query": [
+                { "key": "search", "value": "tirth", "description": "Matches name, department or role (case-insensitive)." },
+                { "key": "sort", "value": "salary", "description": "name, department, role, salary or joinDate." },
+                { "key": "order", "value": "desc", "description": "asc or desc." },
+                { "key": "department", "value": "Engineering", "description": "Exact department name.", "disabled": true }
+              ]
+            },
+            "description": "Shows the optional query parameters for searching, filtering and sorting."
+          }
+        },
+        {
+          "name": "Delete employee",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Confirms the deleted id', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.success).to.be.true;",
+                  "  pm.expect(body.message).to.eql('Employee deleted successfully.');",
+                  "  pm.expect(body.data.id).to.eql(pm.collectionVariables.get('employeeId'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/{{employeeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "{{employeeId}}"]
+            },
+            "description": "Deletes the employee created by \"Add employee\"."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error cases",
+      "item": [
+        {
+          "name": "Add employee with invalid data (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400 Bad Request', () => pm.response.to.have.status(400));",
+                  "pm.test('Lists an error for each invalid field', () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.success).to.be.false;",
+                  "  pm.expect(body.errors).to.have.all.keys('name', 'department', 'salary', 'joinDate');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"role\": \"Software Developer\",\n  \"salary\": -500,\n  \"joinDate\": \"12-06-2026\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees"]
+            },
+            "description": "Empty name, missing department, negative salary and a date in the wrong format."
+          }
+        },
+        {
+          "name": "Update employee that does not exist (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404 Not Found', () => pm.response.to.have.status(404));",
+                  "pm.test('Returns the error envelope', () => {",
+                  "  pm.expect(pm.response.json()).to.eql({ success: false, message: 'Employee not found.' });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nobody Here\",\n  \"department\": \"Engineering\",\n  \"role\": \"Software Developer\",\n  \"salary\": 60000,\n  \"joinDate\": \"2026-06-12\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/000000000000000000000000",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "000000000000000000000000"]
+            },
+            "description": "A correctly formatted id that matches no employee."
+          }
+        },
+        {
+          "name": "Delete with a malformed id (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400 Bad Request', () => pm.response.to.have.status(400));",
+                  "pm.test('Explains the problem', () => {",
+                  "  pm.expect(pm.response.json()).to.eql({ success: false, message: 'Invalid employee id.' });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/employees/not-a-real-id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "employees", "not-a-real-id"]
+            },
+            "description": "An id that is not a valid MongoDB ObjectId."
+          }
+        }
+      ]
+    }
+  ]
+}
