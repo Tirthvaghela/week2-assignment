@@ -12,3 +12,5 @@ node_modules/
 
 # Local deployment settings created by the Vercel CLI
 .vercel/
+
+.vercel

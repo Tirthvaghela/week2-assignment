@@ -123,9 +123,9 @@ npx serve
 
 ## Live Demo
 
-**Live URL:** `ADD DEPLOYED URL HERE`
+**Live URL:** https://larkfield-systems.vercel.app
 
-The site is static, so it can be deployed as-is on GitHub Pages, Netlify or Vercel with no build command. `index.html` is at the project root and all links are relative.
+The site is hosted on Vercel. It is static, so it deploys as-is with no build command, and would work the same on GitHub Pages or Netlify. `index.html` is at the project root and all links are relative.
 
 ## Screenshots
 
