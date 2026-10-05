@@ -1,0 +1,14 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor settings
+.vscode/
+.idea/
+
+# Dependencies (none are required, listed in case tooling is added later)
+node_modules/
+
+# Local deployment settings created by the Vercel CLI
+.vercel/

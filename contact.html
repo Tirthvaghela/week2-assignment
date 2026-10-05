@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact | Larkfield Systems</title>
+  <meta name="description" content="Contact Larkfield Systems to book a free IT review or ask about a support contract. We reply to every enquiry within one working day.">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Gloock&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__bar">
+      <a class="brand" href="index.html">
+        <span class="brand__name">Larkfield</span>
+        <span class="brand__tag">Systems</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="nav-toggle__label">Menu</span>
+      </button>
+
+      <nav class="site-nav" id="primary-nav" aria-label="Main">
+        <div class="site-nav__inner">
+          <ul class="site-nav__list">
+            <li><a class="site-nav__link" href="index.html"><span class="site-nav__text">Home</span><span class="site-nav__num" aria-hidden="true">01</span></a></li>
+            <li><a class="site-nav__link" href="about.html"><span class="site-nav__text">About</span><span class="site-nav__num" aria-hidden="true">02</span></a></li>
+            <li><a class="site-nav__link" href="services.html"><span class="site-nav__text">Services</span><span class="site-nav__num" aria-hidden="true">03</span></a></li>
+            <li><a class="site-nav__link" href="contact.html" aria-current="page"><span class="site-nav__text">Contact</span><span class="site-nav__num" aria-hidden="true">04</span></a></li>
+          </ul>
+          <a class="button button--accent site-nav__cta" href="contact.html">Free IT review <span class="button__arrow" aria-hidden="true">→</span></a>
+          <p class="site-nav__contact">
+            <a href="tel:+441134960000">0113 496 0000</a>
+            <a href="mailto:hello@larkfield.example">hello@larkfield.example</a>
+          </p>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero__inner">
+        <p class="label">Contact</p>
+        <div class="hero__row">
+          <h1 class="hero__title" id="hero-title">Tell us about your office.</h1>
+          <div class="hero__aside">
+            <p class="hero__lead">We reply to every enquiry within one working day.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" aria-label="Contact details and enquiry form">
+      <div class="container contact-layout">
+        <aside class="contact-panel" aria-labelledby="details-title">
+          <h2 class="visually-hidden" id="details-title">Contact information</h2>
+          <dl>
+            <div class="contact-panel__row">
+              <dt class="label">Office</dt>
+              <dd><address>14 Wharf Street<br>Leeds LS2 7EQ</address></dd>
+            </div>
+            <div class="contact-panel__row">
+              <dt class="label">Phone</dt>
+              <dd><a href="tel:+441134960000">0113 496 0000</a></dd>
+            </div>
+            <div class="contact-panel__row">
+              <dt class="label">Email</dt>
+              <dd><a href="mailto:hello@larkfield.example">hello@larkfield.example</a></dd>
+            </div>
+            <div class="contact-panel__row">
+              <dt class="label">Hours</dt>
+              <dd>Mon–Fri, 8am–6pm</dd>
+            </div>
+          </dl>
+          <p class="contact-panel__note"><strong>Already a client?</strong> For anything broken, call the support line. It's quicker than this form.</p>
+        </aside>
+
+        <div>
+          <p class="label">Enquiry form</p>
+          <h2 class="contact-form__title" id="form-title">Send us a message</h2>
+          <p class="contact-form__note">Fields marked <span class="required-mark" aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.</p>
+
+          <div class="form-status" id="form-status" role="status" tabindex="-1" hidden>
+            <p class="form-status__title" id="form-status-title"></p>
+            <p class="form-status__text">Your enquiry passed validation. This is a demo site with no backend, so nothing was actually sent.</p>
+          </div>
+
+          <div class="form-summary" id="form-summary" role="alert" hidden></div>
+
+          <form class="contact-form" id="contact-form" action="#" method="post" aria-labelledby="form-title">
+            <div class="form-grid">
+              <div class="field">
+                <label class="field__label" for="name">Full name <span class="required-mark" aria-hidden="true">*</span></label>
+                <input class="field__input" type="text" id="name" name="name" autocomplete="name" required aria-describedby="name-error">
+                <p class="field__error" id="name-error"></p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="email">Work email <span class="required-mark" aria-hidden="true">*</span></label>
+                <input class="field__input" type="email" id="email" name="email" autocomplete="email" inputmode="email" required aria-describedby="email-error">
+                <p class="field__error" id="email-error"></p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="phone">Phone <span class="field__optional">(optional)</span></label>
+                <input class="field__input" type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" aria-describedby="phone-error">
+                <p class="field__error" id="phone-error"></p>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="company">Company <span class="field__optional">(optional)</span></label>
+                <input class="field__input" type="text" id="company" name="company" autocomplete="organization">
+              </div>
+            </div>
+
+            <fieldset class="field field--chips" aria-describedby="topic-error">
+              <legend class="field__label">What's it about? <span class="required-mark" aria-hidden="true">*</span></legend>
+              <div class="chips">
+                <label class="chip">
+                  <input type="radio" id="topic-contract" name="topic" value="contract" required>
+                  <span class="chip__text">A support contract</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" id="topic-review" name="topic" value="review">
+                  <span class="chip__text">A free IT review</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" id="topic-project" name="topic" value="project">
+                  <span class="chip__text">A one-off project</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" id="topic-other" name="topic" value="other">
+                  <span class="chip__text">Something else</span>
+                </label>
+              </div>
+              <p class="field__error" id="topic-error"></p>
+            </fieldset>
+
+            <div class="field">
+              <div class="field__top">
+                <label class="field__label" for="message">Message <span class="required-mark" aria-hidden="true">*</span></label>
+                <span class="field__count" id="message-count" aria-hidden="true"></span>
+              </div>
+              <textarea class="field__input" id="message" name="message" rows="5" maxlength="1000" required aria-describedby="message-error" placeholder="How many people, what you use now, what isn't working"></textarea>
+              <p class="field__error" id="message-error"></p>
+            </div>
+
+            <div class="field field--checkbox">
+              <label class="checkbox" for="consent">
+                <input type="checkbox" id="consent" name="consent" required aria-describedby="consent-error">
+                <span>I agree that Larkfield Systems can use these details to reply to my enquiry. <span class="required-mark" aria-hidden="true">*</span></span>
+              </label>
+              <p class="field__error" id="consent-error"></p>
+            </div>
+
+            <div>
+              <button class="button button--primary" type="submit">Send enquiry <span class="button__arrow" aria-hidden="true">→</span></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__lead">
+        <p class="site-footer__statement">Talk to an engineer, not a call centre.</p>
+        <p class="site-footer__direct">
+          <a href="tel:+441134960000">0113 496 0000</a>
+          <a href="mailto:hello@larkfield.example">hello@larkfield.example</a>
+        </p>
+      </div>
+
+      <div class="site-footer__grid">
+        <div class="site-footer__brand">
+          <a class="brand" href="index.html">
+            <span class="brand__name">Larkfield</span>
+            <span class="brand__tag">Systems</span>
+          </a>
+          <p>Managed IT support for offices of 10 to 150 people across West Yorkshire.</p>
+        </div>
+
+        <nav aria-label="Footer">
+          <h2 class="label">Pages</h2>
+          <ul class="site-footer__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div>
+          <h2 class="label">Office</h2>
+          <address>14 Wharf Street<br>Leeds LS2 7EQ<br><span>Mon–Fri, 8am–6pm</span></address>
+        </div>
+
+        <div>
+          <h2 class="label">Follow</h2>
+          <ul class="site-footer__list">
+            <li><a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn <span class="visually-hidden">(opens in a new tab)</span></a></li>
+            <li><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub <span class="visually-hidden">(opens in a new tab)</span></a></li>
+            <li><a href="https://x.com/" target="_blank" rel="noopener noreferrer">X <span class="visually-hidden">(opens in a new tab)</span></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="site-footer__bottom">
+        <p>© 2026 Larkfield Systems Ltd</p>
+        <p>Fictional company, built for an internship project.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/nav.js" defer></script>
+  <script src="js/contact-form.js" defer></script>
+</body>
+</html>
