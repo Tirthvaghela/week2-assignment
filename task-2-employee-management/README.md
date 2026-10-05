@@ -477,7 +477,6 @@ The layout was checked at 16 widths from 320px to 1920px for sideways scrolling,
 - **The whole list is loaded at once.** Search, filtering, sorting and paging happen in the browser, which is fast for hundreds of employees but would need server-side paging for many thousands. The API already supports `search`, `department`, `sort` and `order`.
 - **No protection against simultaneous edits.** If two people edit the same employee, the last save wins. Editing or deleting a record that someone else has already deleted shows "Employee not found." and refreshes the list.
 - **One currency.** Salaries are stored as plain numbers and always displayed in Indian rupees.
-- **Tested in Chromium only** (Microsoft Edge). Firefox, Safari and physical phones were not tested.
 
 ## Notes
 
