@@ -19,3 +19,8 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# Local deployment settings created by the Vercel CLI
+.vercel/
+
+.vercel

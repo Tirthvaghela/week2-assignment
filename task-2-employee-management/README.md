@@ -4,6 +4,8 @@ Week 2, Task 2 of a Full Stack Development internship: a full-stack CRUD applica
 
 The React frontend talks to a Flask REST API, and the API stores the records in MongoDB.
 
+**Live demo:** https://employee-management-app-theta-ivory.vercel.app
+
 ![Employee dashboard on desktop](screenshots/dashboard-desktop.png)
 
 ## 1. Project overview
@@ -96,6 +98,7 @@ task-2-employee-management/
 ├── docs/
 │   └── database-schema.md
 ├── screenshots/
+├── vercel.json                    Deployment routing for Vercel
 ├── .gitignore
 └── README.md
 ```
@@ -398,6 +401,38 @@ Each operation follows the same path: a React component calls a function in `ser
 4. Flask removes the document.
 5. The dialog closes, the row disappears and "Employee deleted successfully." appears.
 
+## Deployment
+
+The live demo runs on [Vercel](https://vercel.com), with the data in a free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster.
+
+| Part | Where it runs |
+| --- | --- |
+| React frontend | Vercel, built with Vite and served as static files |
+| Flask backend | Vercel, as a Python function |
+| MongoDB | MongoDB Atlas |
+
+Both parts are deployed together as one Vercel project, so they share one address. `vercel.json` sends every request under `/api/` to the Flask backend and everything else to the React frontend. Because the frontend and the API are on the same address, no CORS setting is needed in production.
+
+The project has three environment variables on Vercel:
+
+| Variable | Value |
+| --- | --- |
+| `MONGO_URI` | The Atlas connection string, stored as a secret |
+| `MONGO_DB_NAME` | `employee_management` |
+| `VITE_API_URL` | `/api` |
+
+To deploy your own copy, create an Atlas cluster that allows access from anywhere (`0.0.0.0/0`), then run these from this folder:
+
+```powershell
+vercel
+vercel env add MONGO_URI production
+vercel env add MONGO_DB_NAME production
+vercel env add VITE_API_URL production
+vercel --prod
+```
+
+The first request after a quiet period can take a few seconds, because the backend starts on demand.
+
 ## Responsive design
 
 The layout changes at two widths, so the employee list always fits the screen without scrolling sideways.
@@ -438,12 +473,11 @@ The layout was checked at 16 widths from 320px to 1920px for sideways scrolling,
 
 ## Known limitations
 
-- **No sign-in.** Task 2 does not require authentication, so anyone who can reach the API can read and change the data. It is meant to be run locally.
+- **No sign-in.** Task 2 does not require authentication, so anyone who can reach the API can read and change the data. That includes the live demo: its data is public and anyone can edit it.
 - **The whole list is loaded at once.** Search, filtering, sorting and paging happen in the browser, which is fast for hundreds of employees but would need server-side paging for many thousands. The API already supports `search`, `department`, `sort` and `order`.
 - **No protection against simultaneous edits.** If two people edit the same employee, the last save wins. Editing or deleting a record that someone else has already deleted shows "Employee not found." and refreshes the list.
 - **One currency.** Salaries are stored as plain numbers and always displayed in Indian rupees.
 - **Tested in Chromium only** (Microsoft Edge). Firefox, Safari and physical phones were not tested.
-- **Not deployed.** The project runs on a local machine; there is no hosted version.
 
 ## Notes
 
