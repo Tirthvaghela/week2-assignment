@@ -1,0 +1,1049 @@
+/* ==========================================================================
+   Harbor — Authentication System styles
+
+   1. Design tokens
+   2. Base
+   3. Shared pieces (brand, kicker, tag, buttons, spinner, banner)
+   4. Public pages (top bar, centred heading, form, security notes)
+   5. Forms (fields, password meter, success panel)
+   6. Checking screen
+   7. Dashboard
+   8. Tablet (640px to 1023px)
+   9. Mobile (below 640px)
+   10. Motion preferences
+
+   Layout: everything is centred. Register and Log in stack the heading, the
+   form (480px wide at most) and the security notes down the middle of the
+   page. The dashboard is one centred column, 1040px wide at most.
+   ========================================================================== */
+
+/* 1. Design tokens
+   ========================================================================== */
+
+:root {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --fill: #f0f0ec;
+  --text: #111111;
+  --muted: #62625f;
+  --rule: #111111;
+  --hair: #d6d6d1;
+  --placeholder: #9a9a96;
+
+  --ink: #111111;
+  --ink-hover: #333333;
+  --ink-text: #ffffff;
+
+  /* Inverted surface: the dashboard's top bar. */
+  --inv: #111111;
+  --inv-text: #fafaf8;
+  --inv-muted: #9a9a96;
+  --inv-hover: #2a2a2a;
+  --inv-ok: oklch(0.8 0.14 150);
+
+  --error: oklch(0.53 0.2 28);
+  --error-bg: oklch(0.975 0.015 28);
+  --success: oklch(0.47 0.11 150);
+  --success-bg: #ffffff;
+  --warn: oklch(0.53 0.12 65);
+  --warn-bg: oklch(0.975 0.03 85);
+  --info: #111111;
+  --info-bg: #ffffff;
+
+  --font-sans: "Archivo", "Helvetica Neue", Helvetica, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+
+  /* Layout values that change per screen size (see sections 8 and 9). */
+  --margin: 48px;
+  --gap: 24px;
+  --bar-height: 64px;
+  --display-size: 80px;
+  --form-width: 480px;
+  --notes-width: 960px;
+  --dash-width: 1040px;
+}
+
+/* 2. Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+p,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+strong {
+  font-weight: 600;
+}
+
+input::placeholder {
+  color: var(--placeholder);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* 3. Shared pieces
+   ========================================================================== */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand__mark {
+  width: 22px;
+  height: 22px;
+  background: currentColor;
+}
+
+.brand__name {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Small uppercase label in the monospaced face. */
+.kicker,
+.tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.kicker {
+  color: var(--muted);
+}
+
+/* A kicker with a coloured square in front. */
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+}
+
+.tag--success {
+  color: var(--success);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  height: 56px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 0;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+.button--solid {
+  margin-top: 6px;
+  background: var(--ink);
+  color: var(--ink-text);
+}
+
+.button--ready:hover {
+  background: var(--ink-hover);
+}
+
+.button--loading {
+  cursor: progress;
+}
+
+.button--done {
+  background: var(--success);
+  cursor: default;
+}
+
+.button--outline {
+  border: 1px solid var(--text);
+  background: transparent;
+  color: var(--text);
+}
+
+.button--outline:hover:not(:disabled) {
+  background: var(--fill);
+}
+
+.button--inverse {
+  flex: none;
+  gap: 10px;
+  width: auto;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--inv-text);
+  background: transparent;
+  color: var(--inv-text);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.button--inverse:hover:not(:disabled) {
+  background: var(--inv-hover);
+}
+
+.button--inverse:focus-visible {
+  outline-color: var(--inv-text);
+}
+
+.spinner {
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.spinner--large {
+  width: 48px;
+  height: 48px;
+  border-width: 5px;
+  animation-duration: 0.8s;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 18px;
+  border: 1px solid var(--banner-fg);
+  background: var(--banner-bg);
+}
+
+.banner .tag {
+  color: var(--banner-fg);
+}
+
+.banner--error {
+  --banner-fg: var(--error);
+  --banner-bg: var(--error-bg);
+}
+
+.banner--success {
+  --banner-fg: var(--success);
+  --banner-bg: var(--success-bg);
+}
+
+.banner--warn {
+  --banner-fg: var(--warn);
+  --banner-bg: var(--warn-bg);
+}
+
+.banner--info {
+  --banner-fg: var(--info);
+  --banner-bg: var(--info-bg);
+}
+
+.banner__title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.banner__body {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* 4. Public pages
+   ========================================================================== */
+
+.topbar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  /* The rule sits below the bar's height, as in the design. */
+  box-sizing: content-box;
+  height: var(--bar-height);
+  padding: 0 var(--margin);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* One centred column: heading, form, then the security notes. */
+.public-grid {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px var(--margin) 64px;
+}
+
+.display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: var(--notes-width);
+  text-align: center;
+}
+
+.display__title {
+  font-size: var(--display-size);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.display__lede {
+  max-width: 440px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: var(--form-width);
+  min-width: 0;
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 20px;
+  width: 100%;
+  max-width: var(--notes-width);
+  margin-top: 72px;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+
+.fact__number {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.fact__title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.fact__text {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* 5. Forms
+   ========================================================================== */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field__label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.field__control {
+  position: relative;
+  display: flex;
+}
+
+.field__input {
+  flex: 1;
+  min-width: 0;
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  outline: none;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+/* Leaves room for the Show/Hide button. */
+.field__input--password {
+  padding-right: 88px;
+}
+
+/* Focus thickens the border to 2px by adding an inner 1px ring. */
+.field__input:focus {
+  box-shadow: inset 0 0 0 1px var(--text);
+}
+
+.field__input:disabled {
+  opacity: 0.55;
+}
+
+.field--invalid .field__input {
+  border-color: var(--error);
+}
+
+.field--invalid .field__input:focus {
+  box-shadow: inset 0 0 0 1px var(--error);
+}
+
+.field__toggle {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 72px;
+  border: 0;
+  border-left: 1px solid var(--hair);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.field__toggle:hover {
+  background: var(--fill);
+}
+
+.field__toggle:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: -3px;
+}
+
+.field__error {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--error);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.field__error-mark {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: var(--error);
+  transform: translateY(-1px);
+}
+
+.field__hint {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* Password strength: four bars. The colour shows the level:
+   1 weak (red), 2 fair (amber), 3 good and 4 strong (black). */
+.meter {
+  --meter-color: var(--hair);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.meter--1 {
+  --meter-color: var(--error);
+}
+
+.meter--2 {
+  --meter-color: var(--warn);
+}
+
+.meter--3,
+.meter--4 {
+  --meter-color: var(--text);
+}
+
+.meter__bars {
+  display: flex;
+  flex: 1;
+  gap: 2px;
+}
+
+.meter__bar {
+  flex: 1;
+  height: 6px;
+  background: var(--hair);
+}
+
+.meter__bar--on {
+  background: var(--meter-color);
+}
+
+.meter__label {
+  width: 56px;
+  color: var(--meter-color);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.meter--0 .meter__label {
+  color: var(--muted);
+}
+
+.switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--hair);
+  font-size: 15px;
+}
+
+.switch__prompt {
+  color: var(--muted);
+}
+
+.switch__link {
+  padding-bottom: 1px;
+  border-bottom: 1px solid var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Shown in place of the form after a successful registration. */
+.success {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.success__box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--text);
+}
+
+.success__title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.success__text {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.success__track {
+  height: 4px;
+  background: var(--hair);
+}
+
+/* Fills while the page waits before moving on to the login page. */
+.success__fill {
+  width: 100%;
+  height: 100%;
+  background: var(--text);
+  transform-origin: left;
+  animation: fill linear both;
+}
+
+@keyframes fill {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* 6. Checking screen
+   ========================================================================== */
+
+.checking {
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: var(--margin);
+  text-align: center;
+}
+
+.checking__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: var(--notes-width);
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+
+.checking__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.checking__title {
+  font-size: var(--display-size);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+/* 7. Dashboard
+   ========================================================================== */
+
+.dashbar {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 24px;
+  row-gap: 12px;
+  min-height: var(--bar-height);
+  padding: 0 var(--margin);
+  background: var(--inv);
+  color: var(--inv-text);
+}
+
+.dashbar__status {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dashbar__ok {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--inv-ok);
+}
+
+.dashbar__area {
+  color: var(--inv-muted);
+}
+
+.dashbar__user {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 16px;
+}
+
+.dashbar__name {
+  font-size: 14px;
+}
+
+/* One centred column: greeting, session, details, then the footer. */
+.dash {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  max-width: calc(var(--dash-width) + 2 * var(--margin));
+  margin: 0 auto;
+  padding: 48px var(--margin) 40px;
+  transition: opacity 0.2s ease;
+}
+
+/* Dimmed while a logout is in progress. */
+.dash--leaving {
+  opacity: 0.45;
+}
+
+.dash__hero,
+.session {
+  min-width: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+
+.dash__hero {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dash__title {
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.dash__intro {
+  max-width: 460px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.dash__intro strong {
+  color: var(--text);
+}
+
+/* The countdown on the left, its progress bar filling the space beside it. */
+.session {
+  --session-color: var(--text);
+  --state-color: var(--success);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "head head"
+    "count meter";
+  align-items: end;
+  gap: 16px 48px;
+}
+
+.session--warning {
+  --session-color: var(--warn);
+  --state-color: var(--warn);
+}
+
+.session--ending {
+  --state-color: var(--muted);
+}
+
+.session__head {
+  display: flex;
+  grid-area: head;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.session__state {
+  color: var(--state-color);
+}
+
+.session__count {
+  grid-area: count;
+  color: var(--session-color);
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.session__meter {
+  display: flex;
+  grid-area: meter;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 6px;
+}
+
+.session__track {
+  height: 8px;
+  background: var(--hair);
+}
+
+.session__fill {
+  height: 100%;
+  background: var(--session-color);
+}
+
+.session__scale {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gap);
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px 0 22px;
+  border-top: 1px solid var(--rule);
+}
+
+.detail__label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.detail__value {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.detail__value--mono {
+  font-family: var(--font-mono);
+  font-size: 16px;
+}
+
+.dash__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.dash__note {
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dash__logout {
+  gap: 24px;
+  width: auto;
+  min-width: 300px;
+}
+
+/* 8. Tablet (640px to 1023px)
+   ========================================================================== */
+
+@media (max-width: 1023.98px) {
+  :root {
+    --margin: 40px;
+    --display-size: 64px;
+  }
+
+  .public-grid {
+    padding: 48px var(--margin) 56px;
+  }
+
+  .facts {
+    margin-top: 64px;
+  }
+
+  .dash {
+    padding: 40px var(--margin);
+  }
+
+  .dash__title {
+    font-size: 64px;
+  }
+
+  .session__count {
+    font-size: 88px;
+  }
+
+  .details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 9. Mobile (below 640px)
+   ========================================================================== */
+
+@media (max-width: 639.98px) {
+  :root {
+    --margin: 20px;
+    --gap: 16px;
+    --bar-height: 56px;
+    --display-size: 44px;
+  }
+
+  .public-grid {
+    padding: 32px var(--margin) 40px;
+  }
+
+  .display {
+    gap: 14px;
+  }
+
+  .display__lede {
+    font-size: 16px;
+  }
+
+  .form-column {
+    margin-top: 36px;
+  }
+
+  .facts {
+    display: none;
+  }
+
+  .spinner--large {
+    width: 28px;
+    height: 28px;
+    border-width: 3px;
+  }
+
+  /* The status line drops to its own row under the brand and the button. */
+  .dashbar {
+    padding: 12px var(--margin);
+  }
+
+  .dashbar__status {
+    flex-basis: 100%;
+    order: 3;
+  }
+
+  .dashbar__name {
+    display: none;
+  }
+
+  .button--inverse {
+    height: 44px;
+  }
+
+  .dash {
+    gap: 32px;
+    padding: 28px var(--margin) 40px;
+  }
+
+  .dash__title {
+    font-size: 44px;
+  }
+
+  /* The countdown stacks above its progress bar. */
+  .session {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "head"
+      "count"
+      "meter";
+    align-items: start;
+  }
+
+  .session__count {
+    font-size: 72px;
+  }
+
+  .session__meter {
+    padding-bottom: 0;
+  }
+
+  .dash__logout {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* 10. Motion preferences
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dash {
+    transition: none;
+  }
+
+  .success__fill {
+    animation: none;
+  }
+
+  .spinner {
+    animation-duration: 1.6s;
+  }
+}
