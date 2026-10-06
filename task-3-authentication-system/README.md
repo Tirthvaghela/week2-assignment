@@ -4,6 +4,8 @@ Week 2, Task 3 of a Full Stack Development internship: a secure registration and
 
 The React frontend talks to a Flask REST API. Accounts are stored in MongoDB with bcrypt-hashed passwords, and a login is held in a JWT inside an HttpOnly cookie.
 
+**Live demo:** https://harbor-auth-system.vercel.app
+
 ![Protected dashboard on desktop](screenshots/dashboard-desktop.png)
 
 ## Overview
@@ -102,6 +104,7 @@ task-3-authentication-system/
 │           ├── validation.js        Form rules and password strength
 │           └── format.js            Time, date and name formatting
 ├── screenshots/
+├── vercel.json                    Deployment routing for Vercel
 ├── .gitignore
 └── README.md
 ```
@@ -465,9 +468,42 @@ React also escapes everything it displays, so stored text is never run as HTML.
 
 - **No rate limiting.** Repeated login attempts are not slowed down or locked out. A real deployment should add this.
 - **No email verification or password reset.** Neither is part of the task.
-- **HTTPS is not set up.** The app runs over plain HTTP on `localhost`. A deployment must use HTTPS and set `COOKIE_SECURE=1`.
+- **Local development uses plain HTTP.** On `localhost` the cookie is sent without the `Secure` flag. Any deployment must use HTTPS and set `COOKIE_SECURE=1`, as the live demo does.
+- **The live demo is public.** Anyone can register an account on it, so do not use a real password there.
 - **One session length for everyone.** There is no "remember me" and no token refresh; after 60 minutes the user logs in again.
 - **Tested in Chromium only** (Microsoft Edge).
+
+## Deployment
+
+The live demo runs on [Vercel](https://vercel.com), with the accounts in a free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster.
+
+| Part | Where it runs |
+| --- | --- |
+| React frontend | Vercel, built with Vite and served as static files |
+| Flask backend | Vercel, as a Python function |
+| Database | MongoDB Atlas |
+
+Both parts are deployed together as one Vercel project, so they share one address. `vercel.json` sends every request under `/api/` to the Flask backend and everything else to the React frontend, and serves the React page for `/login`, `/register` and `/dashboard` so those addresses can be opened directly. Because the page and the API are on the same address, the login cookie is a same-site cookie and no CORS setting is needed in production.
+
+The project has four environment variables on Vercel. Their values are stored on Vercel only and are not in this repository.
+
+| Variable | Value |
+| --- | --- |
+| `JWT_SECRET` | A long random key, different from any used locally |
+| `MONGO_URI` | The Atlas connection string |
+| `MONGO_DB_NAME` | `authentication_system` |
+| `COOKIE_SECURE` | `1`, so the login cookie is sent over HTTPS only |
+
+To deploy your own copy, create an Atlas cluster that allows access from anywhere (`0.0.0.0/0`), then run these from this folder:
+
+```powershell
+vercel
+vercel env add JWT_SECRET production
+vercel env add MONGO_URI production
+vercel env add MONGO_DB_NAME production
+vercel env add COOKIE_SECURE production
+vercel --prod
+```
 
 ## Screenshots
 
