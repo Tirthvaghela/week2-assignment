@@ -126,7 +126,7 @@ export default function RegisterPage() {
 
           <form className="form" onSubmit={handleSubmit} noValidate>
             <Field {...fieldProps('email')} label="Email" type="email" autoComplete="email" placeholder="name@example.com" />
-            <Field {...fieldProps('username')} label="Username" autoComplete="username" placeholder="e.g. dana.ruiz" />
+            <Field {...fieldProps('username')} label="Username" autoComplete="username" placeholder="e.g. Tirth Vaghela" />
             <Field {...fieldProps('password')} label="Password" password showStrength autoComplete="new-password" />
             <Field {...fieldProps('confirm')} label="Confirm password" password autoComplete="new-password" />
             <SubmitButton label="Create account" loadingLabel="Creating account…" loading={loading} />
